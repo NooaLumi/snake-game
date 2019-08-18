@@ -4,6 +4,7 @@ export default class Snake {
         this.length = 1;
         this.gridSize = gridSize;
         this.move = 1;
+        this.ate = false;
 
         this.blocks = [Math.floor(gridSize / 2) * gridSize + Math.floor(gridSize / 2)];
     }
@@ -30,17 +31,25 @@ export default class Snake {
     }
 
     Update() {
-        this.blocks[0] += this.move;
+        this.blocks.push(this.blocks[this.blocks.length - 1] + this.move);
+        if(!this.ate) {
+            this.blocks.shift();
+        } else {
+            this.ate = false;
+        }
     }
 
     Draw(ctx, size) {
         this.blocks.forEach(block => {
-            console.log(block);
             let y = Math.floor(block / this.gridSize);
             let x = block % this.gridSize;
 
             ctx.fillStyle = "#f00";
             ctx.fillRect(x * size, y * size, size, size);
         });
+    }
+
+    eatFood() {
+        this.ate = true;
     }
 }
