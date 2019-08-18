@@ -9,7 +9,6 @@ export default class Snake {
     }
 
     updateDirection(e) {
-        let oldMove = this.move;
         switch(e.code) {
             case 'KeyA':
             case 'ArrowLeft':
@@ -41,10 +40,10 @@ export default class Snake {
         let oldPos = this.blocks[this.blocks.length - 1];
         let newPos = oldPos + this.move;
         if(this.collisionWithSelf(newPos)) {
-            console.log("gameOver!");
+            this.move = 0;
+            this.updateDirection = () => {}
             return 0;
         } else if(this.collisionWithWalls(newPos, oldPos)) {
-            console.log("wall!");
             return 0;
         }
         this.blocks.push(newPos);

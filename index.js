@@ -40,7 +40,7 @@ window.onload = () => game.Start();
 
 function gameLoop(timestamp) {
 
-    if((timestamp - game.lastUpdate) >= 200) {
+    if((timestamp - game.lastUpdate) >= 100) {
         game.Update();
         game.lastUpdate = timestamp;
     }
