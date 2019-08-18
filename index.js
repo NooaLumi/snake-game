@@ -13,6 +13,8 @@ const game = {
 
         this.snake = new Snake(this.gridSize);
         this.food = new Food(this.gridSize, this.snake.blocks);
+        this.score = 0;
+
         document.addEventListener('keydown', e => this.snake.updateDirection(e));
         this.lastUpdate = 0; // Keeps track of last gameLoop update
 
@@ -38,7 +40,7 @@ window.onload = () => game.Start();
 
 function gameLoop(timestamp) {
 
-    if((timestamp - game.lastUpdate) >= 500) {
+    if((timestamp - game.lastUpdate) >= 200) {
         game.Update();
         game.lastUpdate = timestamp;
     }

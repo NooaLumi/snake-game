@@ -1,7 +1,6 @@
 
 export default class Snake {
     constructor(gridSize) {
-        this.length = 1;
         this.gridSize = gridSize;
         this.move = 1;
         this.ate = false;
@@ -10,28 +9,46 @@ export default class Snake {
     }
 
     updateDirection(e) {
-
+        let oldMove = this.move;
         switch(e.code) {
             case 'KeyA':
             case 'ArrowLeft':
-                this.move = -1;
+                if(this.move !== 1) {
+                    this.move = -1;
+                }
                 break;
             case 'KeyD':
             case 'ArrowRight':
-                this.move = 1;
+                if(this.move !== -1) {
+                    this.move = 1;
+                }
                 break;
             case 'KeyW':
             case 'ArrowUp':
-                this.move = -this.gridSize;
+                if(this.move !== this.gridSize) {
+                    this.move = -this.gridSize;
+                }
                 break;
             case 'KeyS':
             case 'ArrowDown':
-                this.move = this.gridSize;
+                if(this.move !== -this.gridSize) {
+                    this.move = this.gridSize;
+                }
         }
     }
 
     Update() {
-        this.blocks.push(this.blocks[this.blocks.length - 1] + this.move);
+        let oldPos = this.blocks[this.blocks.length - 1];
+        let newPos = oldPos + this.move;
+        if(this.collisionWithSelf(newPos)) {
+            console.log("gameOver!");
+            return 0;
+        } else if(this.collisionWithWalls(newPos, oldPos)) {
+            console.log("wall!");
+            return 0;
+        }
+        this.blocks.push(newPos);
+
         if(!this.ate) {
             this.blocks.shift();
         } else {
@@ -51,5 +68,25 @@ export default class Snake {
 
     eatFood() {
         this.ate = true;
+    }
+
+    collisionWithSelf(pos) {
+        let collision = false;
+        this.blocks.forEach(block => {
+            if(pos === block) {
+                collision = true;
+            }
+        });
+        return collision;
+    }
+
+    collisionWithWalls(pos, prevPos) {
+        if((pos % this.gridSize) === 0 && (prevPos % this.gridSize) === this.gridSize - 1 // Right to left
+        || (pos % this.gridSize) === this.gridSize - 1 && (prevPos % this.gridSize) === 0 // Left to right
+        || pos >= this.gridSize * this.gridSize // Bottom
+        || pos < 0 ) {  // Top
+            return true;
+        }
+        return false;
     }
 }
