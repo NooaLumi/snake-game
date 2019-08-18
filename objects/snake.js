@@ -3,7 +3,7 @@ export default class Snake {
     constructor(gridSize) {
         this.length = 1;
         this.gridSize = gridSize;
-        this.dir = 'right';
+        this.move = 1;
 
         this.blocks = [Math.floor(gridSize / 2) * gridSize + Math.floor(gridSize / 2)];
     }
@@ -13,24 +13,24 @@ export default class Snake {
         switch(e.code) {
             case 'KeyA':
             case 'ArrowLeft':
-                this.dir = 'left';
+                this.move = -1;
                 break;
             case 'KeyD':
             case 'ArrowRight':
-                this.dir = 'right';
+                this.move = 1;
                 break;
             case 'KeyW':
             case 'ArrowUp':
-                this.dir = 'up';
+                this.move = -this.gridSize;
                 break;
             case 'KeyS':
             case 'ArrowDown':
-                this.dir = 'down';
+                this.move = this.gridSize;
         }
     }
 
     Update() {
-        this.blocks[0] += 1;
+        this.blocks[0] += this.move;
     }
 
     Draw(ctx, size) {
